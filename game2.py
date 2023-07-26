@@ -25,6 +25,29 @@ class Player(Actor):
         if keyboard.space:
             self.angle += self.speed 
 
+    def check_boundary(self):
+        '''This is method check_boundary, that checks if player is within screen boundary'''
+        if self.left < 0:
+            self.left = 0
+        if self.right > WIDTH:
+            self.right = WIDTH
+        if self.top < 0:
+            self.top = 0
+        if self.bottom > HEIGHT:
+            self.bottom = HEIGHT
+    
+    def eat(self, fruit):
+        global score
+        if self.colliderect(fruit):
+            fruit.relocate()
+            sounds.clap.play()
+            score += 10
+
+    def update(self):
+        '''This is method update, that updates player position'''
+        self.movement()
+        self.check_boundary()
+
 class Enemy(Actor):
     speed = 2
     def __init__(self, image):
@@ -49,8 +72,8 @@ class Fruit(Actor):
     
     def __init__(self, image):
         super().__init__(image)
-        x = randint(50, WIDTH-50)
-        y = randint(50, HEIGHT-50)
+        self.x = randint(50, WIDTH-50)
+        self.y = randint(50, HEIGHT-50)
 
     def relocate(self):
         self.x = randint(50, WIDTH-50)
@@ -71,7 +94,8 @@ def draw():
     screen.draw.text(f'Score: {score}', (10, 10), color='white')
 
 def update():
-    p.movement()
+    p.update()
+    p.eat(c)
     e.tracking(p)
 
 pgzrun.go()
