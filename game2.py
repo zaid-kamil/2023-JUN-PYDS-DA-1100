@@ -13,6 +13,7 @@ class Player(Actor):
         self.pos = (WIDTH/2, HEIGHT/2) 
 
     def movement(self):
+        print('movement')
         '''This is method movement, that controls player movement'''
         if keyboard.left:
             self.x -= self.speed
